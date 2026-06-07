@@ -29,7 +29,8 @@ import {
   Zap, 
   RefreshCw, 
   CheckCircle, 
-  AlertTriangle 
+  AlertTriangle,
+  Home
 } from 'lucide-react';
 
 function NavigationSidebar({ mobileOpen, setMobileOpen, onSeed }) {
@@ -38,6 +39,7 @@ function NavigationSidebar({ mobileOpen, setMobileOpen, onSeed }) {
   const [seeding, setSeeding] = useState(false);
 
   const menuItems = [
+    { name: 'Home Page', path: '/', icon: Home },
     { name: 'Dashboard', path: '/dashboard', icon: BarChart2 },
     { name: 'Create Project', path: '/create-project', icon: FolderPlus },
     { name: 'Modules Registry', path: '/modules', icon: Layers },
@@ -61,7 +63,7 @@ function NavigationSidebar({ mobileOpen, setMobileOpen, onSeed }) {
     <div className="flex flex-col h-full bg-[#0d1321]/95 border-r border-slate-800/80 w-64 p-5 shrink-0 justify-between">
       <div>
         {/* Brand Header */}
-        <div className="flex items-center gap-3 pb-6 border-b border-slate-800/80 mb-6">
+        <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 pb-6 border-b border-slate-800/80 mb-6 no-underline hover:opacity-90 transition">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
             <ShieldAlert className="w-5 h-5 text-white" />
           </div>
@@ -69,7 +71,7 @@ function NavigationSidebar({ mobileOpen, setMobileOpen, onSeed }) {
             <span className="font-extrabold text-sm text-white tracking-widest uppercase block">SafeDeploy</span>
             <span className="text-[10px] text-cyan-400 font-mono tracking-wider font-bold">AI MEMORY SYSTEM</span>
           </div>
-        </div>
+        </Link>
 
         {/* Nav Link List */}
         <nav className="space-y-1.5">
@@ -290,8 +292,10 @@ function AppContent() {
             >
               <Menu className="w-4.5 h-4.5" />
             </button>
-            <ShieldAlert className="w-5 h-5 text-cyan-400 animate-pulse" />
-            <span className="font-extrabold text-xs text-white tracking-widest">SAFEDEPLOY</span>
+            <Link to="/" className="flex items-center gap-1.5 no-underline">
+              <ShieldAlert className="w-5 h-5 text-cyan-400 animate-pulse" />
+              <span className="font-extrabold text-xs text-white tracking-widest">SAFEDEPLOY</span>
+            </Link>
           </div>
 
           {/* Global Search Component */}
