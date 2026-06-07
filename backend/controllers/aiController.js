@@ -130,7 +130,24 @@ ${bestMatch.fixApplied || 'Fix detail is unavailable.'}
       bestScore = 0;
       const lowerQuery = query.toLowerCase();
       
-      if (lowerQuery.includes('project') || lowerQuery.includes('list')) {
+      const asksAboutFailures = lowerQuery.includes('failed') || 
+                                lowerQuery.includes('failure') || 
+                                lowerQuery.includes('error') || 
+                                lowerQuery.includes('incident') || 
+                                lowerQuery.includes('issue');
+
+      if (asksAboutFailures) {
+        if (troubleDeployments.length > 0) {
+          const failList = troubleDeployments.map(d => {
+            const modName = d.moduleId ? (d.moduleId.moduleName || d.moduleId.name || 'Unknown Module') : 'Unknown Module';
+            const projName = d.projectId ? (d.projectId.projectName || d.projectId.name || 'Unknown Project') : 'Unknown Project';
+            return `- **${modName}** (v${d.version}, Project: ${projName}) - *Issue: ${d.issueTitle || 'Unspecified Error'}*`;
+          }).join('\n');
+          answer = `I found the following active failed deployment records in SafeDeploy database memory:\n\n${failList}`;
+        } else {
+          answer = `There are currently no failed deployment records in the database. All registered microservice modules are operating successfully!`;
+        }
+      } else if (lowerQuery.includes('project') || lowerQuery.includes('list')) {
         const projList = projects.map(p => `- **${p.projectName || p.name}** (Team: ${p.teamName || p.owner})`).join('\n');
         answer = `I couldn't find specific deployment failures. However, here are the projects registered in SafeDeploy:\n\n${projList || 'No projects registered yet.'}`;
       } else if (lowerQuery.includes('module') || lowerQuery.includes('service')) {
@@ -138,7 +155,7 @@ ${bestMatch.fixApplied || 'Fix detail is unavailable.'}
         answer = `I couldn't find a matching incident. Here is a catalog of the currently active modules:\n\n${modList || 'No modules registered yet.'}`;
       } else {
         answer = `I analyzed our deployment memory database but couldn't find a recorded failure or resolution matching **"${query}"**. 
-
+ 
 **Here are some query ideas you can try:**
 - *"Why did the stripe webhook fail?"* (queries Payment Gateway Linker failure logs)
 - *"What is the resolution for the mongo connection timeout?"* (queries Catalog Database Router incident)
