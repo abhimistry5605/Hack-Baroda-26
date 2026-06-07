@@ -71,31 +71,22 @@ function initialize() {
         const proj = projects.find(p => p.projectName === d.projectName);
         const mod = modules.find(m => m.moduleName === d.moduleName);
         
-        let issueTitle = '';
-        if (d.status === 'failed') {
-          issueTitle = d.moduleName.includes('Payment') 
-            ? 'Stripe Client Connection Timeout (Egress Blocked)' 
-            : 'Atlas Host Resolution Failure';
-        } else if (d.status === 'rolled_back') {
-          issueTitle = 'Redis Auth Connection Refused';
-        }
-
         return {
           _id: `mock-dep-${idx + 1}`,
           projectId: proj ? proj._id : `mock-proj-1`,
           moduleId: mod ? mod._id : `mock-mod-1`,
-          developerName: d.initiatedBy || 'Jenkins CI',
+          developerName: d.developerName || d.initiatedBy || 'Jenkins CI',
           version: d.version,
-          environment: d.environment === 'production' ? 'Production' : 'Staging',
-          issueTitle: issueTitle,
-          issueDescription: d.failureReason || '',
-          rootCause: d.failureReason ? `DNS/Network proxy firewall policies blocked the egress sockets.` : '',
-          fixApplied: d.troubleshootingFix || '',
-          deploymentStatus: normalizeDeploymentStatus(d.status),
-          notes: d.logs || 'Initial seeded log outputs.',
-          deploymentDate: new Date(Date.now() - (idx * 3600000 * 12)), // spaced times
-          createdAt: new Date(Date.now() - (idx * 3600000 * 12)),
-          updatedAt: new Date(Date.now() - (idx * 3600000 * 12))
+          environment: d.environment || 'Staging',
+          issueTitle: d.issueTitle || '',
+          issueDescription: d.issueDescription || '',
+          rootCause: d.rootCause || '',
+          fixApplied: d.fixApplied || '',
+          deploymentStatus: d.deploymentStatus || normalizeDeploymentStatus(d.status),
+          notes: d.notes || d.logs || 'Initial seeded log outputs.',
+          deploymentDate: d.deploymentDate ? new Date(d.deploymentDate) : new Date(Date.now() - (idx * 3600000 * 12)),
+          createdAt: d.deploymentDate ? new Date(d.deploymentDate) : new Date(Date.now() - (idx * 3600000 * 12)),
+          updatedAt: d.deploymentDate ? new Date(d.deploymentDate) : new Date(Date.now() - (idx * 3600000 * 12))
         };
       });
 
