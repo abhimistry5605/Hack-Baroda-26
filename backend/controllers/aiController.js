@@ -115,23 +115,7 @@ Instructions:
 User query: "${query}"
 Answer:`;
 
-    if (geminiKey && geminiKey.trim() !== '') {
-      try {
-        const genAI = new GoogleGenerativeAI(geminiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-        const result = await model.generateContent(systemPrompt);
-        const response = await result.response;
-        answer = response.text();
-        if (answer) {
-          isLlmSuccess = true;
-          bestScore = 0.95;
-        }
-      } catch (err) {
-        console.error('Gemini API Error, falling back to other methods:', err);
-      }
-    }
-
-    if (!isLlmSuccess && openaiKey && openaiKey.trim() !== '') {
+    if (openaiKey && openaiKey.trim() !== '') {
       try {
         const openai = new OpenAI({ apiKey: openaiKey });
         const completion = await openai.chat.completions.create({
@@ -148,7 +132,23 @@ Answer:`;
           bestScore = 0.95;
         }
       } catch (err) {
-        console.error('OpenAI API Error, falling back to offline search:', err);
+        console.error('OpenAI API Error, falling back to other methods:', err);
+      }
+    }
+
+    if (!isLlmSuccess && geminiKey && geminiKey.trim() !== '') {
+      try {
+        const genAI = new GoogleGenerativeAI(geminiKey);
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const result = await model.generateContent(systemPrompt);
+        const response = await result.response;
+        answer = response.text();
+        if (answer) {
+          isLlmSuccess = true;
+          bestScore = 0.95;
+        }
+      } catch (err) {
+        console.error('Gemini API Error, falling back to offline search:', err);
       }
     }
 

@@ -4,6 +4,8 @@ const Project = require('../models/Project');
 const Module = require('../models/Module');
 const Deployment = require('../models/Deployment');
 const QueryLog = require('../models/QueryLog');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { OpenAI } = require('openai');
 
 const useMemory = () => mongoose.connection.readyState !== 1;
 
@@ -34,7 +36,72 @@ const summarizeIncident = async (req, res) => {
     const fix = deployment.fixApplied || 'No troubleshooting steps documented.';
 
     // Generate markdown summarization
-    const summaryMarkdown = `### SafeDeploy Copilot Diagnostic Summary
+    let summaryMarkdown = '';
+    const geminiKey = process.env.GEMINI_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+
+    const summaryPrompt = `You are SafeDeploy AI, a DevOps troubleshooting assistant.
+Summarize the following microservice deployment incident record:
+- Project Name: ${pName}
+- Service/Module Name: ${mName}
+- Failed Version: v${deployment.version}
+- Target Environment: ${deployment.environment}
+- Responsible Developer: ${deployment.developerName || 'Jenkins CI'}
+- Incident/Issue Title: ${title}
+- Incident Description: ${desc}
+- Underlying Root Cause: ${cause}
+- Fix Applied: ${fix}
+- Operator Notes / Raw Logs: ${deployment.notes || 'N/A'}
+
+Instructions:
+Generate a professional, detailed Copilot Diagnostic Summary in Markdown.
+Structure your summary with these sections:
+### SafeDeploy Copilot Diagnostic Summary
+
+#### 🔍 Root Cause Analysis
+- **Incident Target**: **${mName}** (v${deployment.version}) in **${deployment.environment}**
+- Explain clearly what happened and the underlying root cause based on the record logs/description.
+
+#### ⚠️ Common Issues Linked to This Class
+- Provide 2-3 common DevOps/networking issues that could trigger this type of failure.
+
+#### 🛠️ Recommended Actions
+- Detail 3 actionable steps developers or operators can take to resolve or prevent this class of issues in the future.
+
+Ensure the response is clean, structured, and informative.`;
+
+    if (openaiKey && openaiKey.trim() !== '') {
+      try {
+        const openai = new OpenAI({ apiKey: openaiKey });
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are SafeDeploy AI, a DevOps troubleshooting assistant.' },
+            { role: 'user', content: summaryPrompt }
+          ],
+          temperature: 0.3
+        });
+        summaryMarkdown = completion.choices[0].message.content;
+      } catch (err) {
+        console.error('OpenAI Incident Summary Error, falling back to other methods:', err);
+      }
+    }
+
+    if (!summaryMarkdown && geminiKey && geminiKey.trim() !== '') {
+      try {
+        const genAI = new GoogleGenerativeAI(geminiKey);
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const result = await model.generateContent(summaryPrompt);
+        const response = await result.response;
+        summaryMarkdown = response.text();
+      } catch (err) {
+        console.error('Gemini Incident Summary Error, falling back to static template:', err);
+      }
+    }
+
+    if (!summaryMarkdown) {
+      // Offline fallback: Generate markdown summarization using static template
+      summaryMarkdown = `### SafeDeploy Copilot Diagnostic Summary
 
 #### 🔍 Root Cause Analysis
 - **Incident Target**: **${mName}** (v${deployment.version}) in **${deployment.environment}**
@@ -50,6 +117,7 @@ const summarizeIncident = async (req, res) => {
 1. **Verify Outbound Socket Egress**: Ensure port rules and proxies permit connections to upstream dependencies.
 2. **Override coreDNS rules**: Review Helm Kubernetes cluster configurations for pod resolver override blocks.
 3. **Vault Sync Check**: Re-run continuous credentials deployment jobs to update base64 values.`;
+    }
 
     res.json({
       deploymentId,
