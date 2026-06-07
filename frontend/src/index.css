@@ -1,0 +1,279 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-darkBg: #F8FAFC;
+  --color-darkCard: #FFFFFF;
+  --color-primaryCyan: #1E3A8A;
+  --color-accentPurple: #0F172A;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  background-color: #F8FAFC;
+  color: #0F172A;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Overrides for Light Mode Theme mapping */
+
+/* Main Background */
+.bg-\[\#070b13\],
+body {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+/* Cards & Panel Backgrounds */
+.bg-\[\#0d1321\],
+.bg-\[\#0d1321\]\/95,
+.bg-\[\#0d1321\]\/60,
+.glass-panel,
+.glass-card,
+.bg-slate-900,
+.bg-slate-900\/60,
+.bg-slate-950,
+.bg-slate-950\/40,
+.bg-slate-950\/80,
+.bg-slate-950\/60,
+a.bg-slate-950\/40,
+.bg-[#0d1321],
+.bg-[#0d1321]/95,
+.bg-[#0d1321]/60 {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Sidebar Specific (Keep Secondary slate/navy #0F172A background for contrast) */
+.flex.flex-col.h-full.bg-\[\#0d1321\]\/95,
+.flex.flex-col.h-full.bg-\[\#0d1321\]\/95 * {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+}
+
+.flex.flex-col.h-full.bg-\[\#0d1321\]\/95 a {
+  color: #94A3B8 !important;
+}
+
+.flex.flex-col.h-full.bg-\[\#0d1321\]\/95 a:hover {
+  color: #FFFFFF !important;
+  background-color: #1E293B !important;
+}
+
+.flex.flex-col.h-full.bg-\[\#0d1321\]\/95 a .text-cyan-400 {
+  color: #38BDF8 !important;
+}
+
+/* Active sidebar link */
+.bg-gradient-to-r.from-cyan-600\/20.to-violet-600\/20 {
+  background: #1E3A8A !important;
+  color: #FFFFFF !important;
+  border-left: 2px solid #38BDF8 !important;
+}
+
+/* Text Overrides */
+.text-white,
+.text-slate-200,
+.text-slate-300,
+.text-slate-100,
+h1, h2, h3, h4, h5, h6,
+.font-bold.text-slate-200,
+.font-semibold.text-slate-200 {
+  color: #0F172A !important;
+}
+
+.text-slate-400,
+.text-slate-500,
+.text-slate-600 {
+  color: #475569 !important;
+}
+
+/* Primary Accents: #1E3A8A (deep blue) */
+.text-cyan-400,
+.text-violet-400,
+.text-indigo-400,
+.text-cyan-300,
+.text-violet-300,
+.text-indigo-300,
+.bg-gradient-to-r.from-cyan-400.to-violet-400,
+.bg-clip-text {
+  color: #1E3A8A !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  background-image: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+/* Buttons */
+.bg-slate-800,
+.bg-slate-900,
+.hover\:bg-slate-750:hover,
+.hover\:bg-slate-700:hover {
+  background-color: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.bg-gradient-to-r.from-cyan-500.to-violet-600,
+.bg-gradient-to-r.from-cyan-600.to-violet-600,
+.bg-gradient-to-r.from-cyan-500.to-violet-500,
+.bg-cyan-500,
+.bg-violet-500,
+.bg-cyan-600,
+.bg-violet-600,
+.bg-emerald-600,
+.hover\:bg-emerald-500:hover {
+  background: #1E3A8A !important;
+  background-color: #1E3A8A !important;
+  color: #FFFFFF !important;
+  border-color: #1E3A8A !important;
+}
+
+.bg-gradient-to-r.from-cyan-500.to-violet-600:hover,
+.bg-gradient-to-r.from-cyan-500.to-violet-500:hover,
+.bg-emerald-600:hover {
+  background: #1D4ED8 !important;
+  background-color: #1D4ED8 !important;
+}
+
+/* Outlines & Borders */
+.border-slate-800,
+.border-slate-850,
+.border-slate-800\/80,
+.border-slate-800\/60,
+.border-slate-700,
+.border-slate-700\/60,
+.border-slate-700\/80,
+.border-slate-600,
+.border-slate-850\/60 {
+  border-color: #E2E8F0 !important;
+}
+
+/* Success: #22C55E */
+.text-emerald-400,
+.text-teal-400,
+.text-emerald-300,
+.text-teal-300,
+.bg-emerald-500\/10,
+.bg-emerald-500\/20,
+.bg-emerald-950\/10,
+.bg-emerald-950\/15 {
+  color: #22C55E !important;
+}
+.bg-emerald-500\/10,
+.bg-emerald-500\/20,
+.bg-emerald-950\/10,
+.bg-emerald-950\/15 {
+  background-color: rgba(34, 197, 94, 0.1) !important;
+  border-color: rgba(34, 197, 94, 0.2) !important;
+}
+
+/* Warning: #F59E0B */
+.text-amber-400,
+.text-amber-300,
+.bg-amber-500\/10,
+.bg-amber-500\/20,
+.bg-amber-950\/10,
+.bg-amber-950\/15 {
+  color: #F59E0B !important;
+}
+.bg-amber-500\/10,
+.bg-amber-500\/20,
+.bg-amber-950\/10,
+.bg-amber-950\/15 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+/* Danger: #EF4444 */
+.text-rose-400,
+.text-rose-300,
+.bg-rose-500\/10,
+.bg-rose-500\/20,
+.bg-rose-950\/10,
+.bg-rose-950\/15,
+.bg-red-950\/40 {
+  color: #EF4444 !important;
+}
+.bg-rose-500\/10,
+.bg-rose-500\/20,
+.bg-rose-950\/10,
+.bg-rose-950\/15,
+.bg-rose-950\/40,
+.bg-red-950\/40 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+/* Inputs and interactive selects */
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+  background-color: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #1E3A8A !important;
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1) !important;
+}
+
+/* Hide background blurs and neon glowing circles */
+.glow-bg,
+.absolute.top-\[-200px\],
+.absolute.bottom-\[-200px\] {
+  display: none !important;
+}
+
+/* SVG trends axes and grids */
+line[stroke="#1e293b"] {
+  stroke: #E2E8F0 !important;
+}
+
+text[fill="#64748b"] {
+  fill: #475569 !important;
+}
+
+svg circle[stroke="#0b0f19"] {
+  stroke: #FFFFFF !important;
+}
+
+.w-0.5.bg-gradient-to-b {
+  background: #E2E8F0 !important;
+}
+
+.neon-border-cyan,
+.neon-border-purple {
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: none !important;
+}

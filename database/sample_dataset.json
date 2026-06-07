@@ -1,0 +1,83 @@
+{
+  "projects": [
+    {
+      "projectName": "E-Commerce Suite",
+      "teamName": "Alpha Checkout Squad",
+      "description": "Full-scale online retail application, including checkout, user registry, cart systems, and payment endpoints.",
+      "projectType": "Web Application"
+    },
+    {
+      "projectName": "SafeDeploy Core API",
+      "teamName": "Core DevOps Team",
+      "description": "The logging processor engine, AI parser endpoints, and UI dashboard backend for SafeDeploy.",
+      "projectType": "API Service"
+    }
+  ],
+  "modules": [
+    {
+      "moduleName": "Payment Gateway Linker",
+      "projectName": "E-Commerce Suite",
+      "moduleType": "Payment",
+      "description": "Handles Stripe checkout integrations and webhook receivers.",
+      "owner": "Sarah Jenkins"
+    },
+    {
+      "moduleName": "Catalog Database Router",
+      "projectName": "E-Commerce Suite",
+      "moduleType": "Database",
+      "description": "Controls product catalog lookup indexes and MongoDB aggregations.",
+      "owner": "Marcus Chen"
+    },
+    {
+      "moduleName": "Ingress Log Parser",
+      "projectName": "SafeDeploy Core API",
+      "moduleType": "API Service",
+      "description": "Ingests server stdout logs and tags tracebacks.",
+      "owner": "Sarah Jenkins"
+    }
+  ],
+  "deployments": [
+    {
+      "projectName": "E-Commerce Suite",
+      "moduleName": "Payment Gateway Linker",
+      "developerName": "Jenkins CI",
+      "version": "2.4.0",
+      "environment": "Production",
+      "issueTitle": "",
+      "issueDescription": "",
+      "rootCause": "",
+      "fixApplied": "",
+      "deploymentStatus": "Success",
+      "notes": "Building container...\nChecking dependencies...\nMigrating database...\nDeployment completed successfully.",
+      "deploymentDate": "2026-06-05T10:00:00.000Z"
+    },
+    {
+      "projectName": "E-Commerce Suite",
+      "moduleName": "Payment Gateway Linker",
+      "developerName": "Sarah Jenkins",
+      "version": "2.4.1",
+      "environment": "Production",
+      "issueTitle": "Stripe API Webhook Connection Failure",
+      "issueDescription": "Stripe API connection timed out due to missing proxy headers in the custom firewall configuration.",
+      "rootCause": "Container firewall policies blocked egress traffic on port 443 to external hosts without explicit proxy headers.",
+      "fixApplied": "Added ingress proxy headers and configured the firewall to permit egress traffic on port 443 to *.stripe.com. Added strict timeout settings of 5000ms.",
+      "deploymentStatus": "Failed",
+      "notes": "Building container...\nLoading environment variables...\nFATAL ERROR: process out of memory / Stripe connection error.\nError: connection timed out at Stripe client link (port 443).",
+      "deploymentDate": "2026-06-06T14:30:00.000Z"
+    },
+    {
+      "projectName": "E-Commerce Suite",
+      "moduleName": "Catalog Database Router",
+      "developerName": "Marcus Chen",
+      "version": "1.8.0",
+      "environment": "Production",
+      "issueTitle": "Mongo Atlas Host Resolution Error",
+      "issueDescription": "Unable to resolve MongoDB Atlas hostname inside the VPC container due to DNS misconfiguration.",
+      "rootCause": "VPC container Kubernetes CoreDNS lacked host file entry resolvers for Atlas public cluster shards.",
+      "fixApplied": "Configured custom DNS resolvers in Kubernetes pod configuration (coredns overrides) and whitelisted VPC CIDR block inside MongoDB Atlas Security Settings.",
+      "deploymentStatus": "Failed",
+      "notes": "Initializing mongo connect...\nMongooseServerSelectionError: connection timed out after 30000ms.\nDatabase connection failed. Exiting process.",
+      "deploymentDate": "2026-06-07T09:00:00.000Z"
+    }
+  ]
+}
