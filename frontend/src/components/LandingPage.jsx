@@ -55,7 +55,7 @@ export default function LandingPage() {
         <div className="nav-container">
           <Link to="/" className="nav-logo">
             <ShieldAlert className="w-5 h-5 animate-pulse text-blue-600" />
-            Project Knowledge Hub
+            SAFEDEPLOY
           </Link>
           <div className="nav-links hidden md:flex">
             <button onClick={() => handleScrollTo('features')} className="nav-link cursor-pointer bg-transparent border-none">Features</button>
@@ -277,7 +277,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="landing-footer">
         <div className="footer-container">
-          <span className="footer-logo">Project Knowledge Hub</span>
+          <span className="footer-logo">SAFEDEPLOY</span>
           <p className="footer-text">
             © {new Date().getFullYear()} SafeDeploy. Hackathon Showcase Edition. All Rights Reserved.
           </p>
